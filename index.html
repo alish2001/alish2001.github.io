@@ -11,22 +11,48 @@
     </head>
     
     <style>
-    #cornerBox {
-        border-radius: 25px;
-        background: #;
-        padding: 20px; 
-        width: 200px;
-        height: 150px;    
-    }
+        body {
+            margin-left: 35%;
+            margin-right: 35%;
+            margin-top: 10%;
+        }
+        
+        a {
+          font-weight: bold;  
+        }
+        
+        #roundedAvatar {
+            border-radius: 50%;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
         
     </style>
 <body>
     
     <!--JavaScript at end of body for optimized loading-->
     <script type="text/javascript" src="js/materialize.min.js"></script>
-    <div id="#cornerBox">
-    <h1>Hello World</h1>
-    <p>I'm hosted with GitHub Pages.</p>
+    
+    <div class="container">
+     <div class="row">
+        <img id= "roundedAvatar" src="https://yt3.ggpht.com/-7VxPICNWHCI/AAAAAAAAAAI/AAAAAAAAAAA/X_3fgxoj6Uc/s288-mo-c-c0xffffffff-rj-k-no/photo.jpg" alt="Avatar">
+        </div>
+        <div class="row">
+           
+          <div class="col s6"><span class="flow-text">YouTube</span></div>
+          <div class="col s6"><a href="https://www.youtube.com/alish2001" class="red accent-4 waves-effect waves-light btn">YouTube</a></div>
+
+      </div> 
+       
+      <div class="row">
+          <div class="col s6"><span class="flow-text">Instagram</span></div>
+          <div class="col s6"><a href="https://www.instagram.com/alish2001_" class="pink accent-3 waves-effect waves-light btn">Instagram</a></div>
+      </div>
+      
+      <div class="row">
+          <div class="col s6"><span class="flow-text">Twitter</span></div>
+          <div class="col s6"><a href="https://www.twitter.com/alish2001_" class="cyan accent-3 waves-effect waves-light btn">Twitter</a></div>
+      </div>
+        
     </div>
 </body>
 </html>
