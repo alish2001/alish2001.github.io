@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Question?</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin-top: 100px;
+            background-color: #ffe6e6;
+            color: #d4145a;
+        }
+
+        .container {
+            position: relative;
+            height: 500px;
+        }
+
+        .button {
+            position: absolute;
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 25px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .yes {
+            background-color: #ff4d79;
+            color: white;
+        }
+
+        .no {
+            background-color: #ff8da1;
+            color: white;
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(100vh) scale(0.5);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .heart {
+            position: absolute;
+            animation: floatHeart 5s linear forwards;
+            font-size: 24px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hearts"></div>
+    <h2>Hey Labkhand, will you be my Valentine?</h2>
+    <div class="container">
+        <button class="button yes" onclick="addToCalendar()">Yes (✿ ♥‿♥)</button>
+        <button class="button no">No (╥﹏╥)</button>
+    </div>
+
+    <script>
+        const noButton = document.querySelector('.no');
+        const yesButton = document.querySelector('.yes');
+        const container = document.querySelector('.container');
+        const hearts = document.querySelector('.hearts');
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.className = 'heart';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            heart.style.opacity = Math.random() * 0.5 + 0.5;
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            hearts.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+
+        setInterval(createHeart, 300);
+
+        function getRandomPosition() {
+            const maxX = container.clientWidth - noButton.clientWidth;
+            const maxY = container.clientHeight - noButton.clientHeight;
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            return { x: randomX, y: randomY };
+        }
+
+        function moveNoButton() {
+            const position = getRandomPosition();
+            noButton.style.left = `${position.x}px`;
+            noButton.style.top = `${position.y}px`;
+        }
+
+        function addToCalendar() {
+            const startDate = new Date('2025-02-14T21:00:00');
+            const endDate = new Date('2025-02-14T23:00:00');
+            const title = "Valentine's Day Date 💘";
+            const details = "Special Valentine's Day date with my azizam 💘";
+
+            const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startDate.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}\/${endDate.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}&details=${encodeURIComponent(details)}&location=${encodeURIComponent('75 King St. South Unit 37, Waterloo, ON Canada N2J 1P2')}`;
+
+            window.open(calendarUrl, '_blank');
+            alert('Yay! Check your calendar for our Valentine\'s date! 💖');
+        }
+
+        // Initial position
+        // noButton.style.position = 'static'; // Reset to normal document flow
+        moveNoButton();
+
+        // Move on hover (desktop)
+        noButton.addEventListener('mouseover', moveNoButton);
+
+        // Move on touch (mobile)
+        noButton.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevent default touch behavior
+            moveNoButton();
+        });
+
+        // Move on click (both desktop and mobile)
+        noButton.addEventListener('click', moveNoButton);
+    </script>
+</body>
+
+</html>
