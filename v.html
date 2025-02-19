@@ -120,12 +120,12 @@
         }
 
         function addToCalendar() {
-            const startDate = new Date('2025-02-14T21:00:00');
-            const endDate = new Date('2025-02-14T23:00:00');
+            const startDate = new Date('2025-02-19T19:00:00');
+            const endDate = new Date('2025-02-19T21:00:00');
             const title = "Valentine's Day Date 💘";
             const details = "Special Valentine's Day date with my azizam 💘";
 
-            const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startDate.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}\/${endDate.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}&details=${encodeURIComponent(details)}&location=${encodeURIComponent('75 King St. South Unit 37, Waterloo, ON Canada N2J 1P2')}`;
+            const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startDate.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}\/${endDate.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}&details=${encodeURIComponent(details)}&location=${encodeURIComponent('The Bauer Kitchen, 187 King St S #102, Waterloo, ON N2L 0A5, Canada')}`;
 
             window.open(calendarUrl, '_blank');
             alert('Yay! Check your calendar for our Valentine\'s date! 💖');
