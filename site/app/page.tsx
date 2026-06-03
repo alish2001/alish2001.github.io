@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useState } from "react";
 import {
@@ -134,12 +135,12 @@ export default function Home() {
         className="flex items-center justify-end"
       >
         <nav className="flex gap-6 font-sans text-sm lowercase tracking-wide text-neutral-400">
-          <a
-            href="#projects"
+          <Link
+            href="/projects"
             className="flex min-h-[40px] items-center px-1 transition-colors hover:text-white"
           >
             projects
-          </a>
+          </Link>
           <a
             href="#contact"
             className="flex min-h-[40px] items-center px-1 transition-colors hover:text-white"
@@ -199,8 +200,8 @@ export default function Home() {
             variants={fadeUp}
             className="mt-10 flex flex-wrap items-center gap-x-4 gap-y-2 font-sans text-xs font-medium uppercase tracking-[0.18em]"
           >
-            <a
-              href="#projects"
+            <Link
+              href="/projects"
               className="group flex min-h-[40px] items-center gap-2 font-semibold transition-opacity hover:opacity-80"
               style={{ color: ACCENT }}
             >
@@ -211,7 +212,7 @@ export default function Home() {
               >
                 →
               </span>
-            </a>
+            </Link>
 
             <div className="-ml-2 flex items-center gap-1">
               {SOCIALS.map(({ label, href, Icon, external }) => (
