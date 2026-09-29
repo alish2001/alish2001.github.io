@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Ali Shariatmadari",
   description:
-    "Software Engineer @ Robinhood · UWaterloo Software Engineering '25. I build robotics, game engines, programming languages, AI-powered HCI systems, computer graphics, and scalable infrastructure.",
+    "Member of Technical Staff @ Opendoor · ex-Robinhood · UWaterloo Software Engineering '25. I build robotics, game engines, programming languages, AI-powered HCI systems, computer graphics, and scalable infrastructure.",
   manifest: "/site.webmanifest",
   icons: {
     icon: [

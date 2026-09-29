@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useReducedMotion } from "motion/react";
-import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { ChevronRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import {
   GithubIcon,
   LinkedInIcon,
@@ -39,6 +40,9 @@ const SOCIALS = [
     external: true,
   },
 ] as const;
+
+const PAST_SHOWN = ["Robinhood", "BitGo"] as const;
+const PAST_HIDDEN = ["PostGrid", "Capsule", "Bloq", "TD Bank"] as const;
 
 const SPEED = 70; // ms per character
 const START_DELAY = 350; // ms before typing begins
@@ -109,6 +113,112 @@ function Cursor({ blink }: { blink: boolean }) {
   );
 }
 
+function Sep() {
+  return <span className="ml-3 text-neutral-700">/</span>;
+}
+
+const EASE_IN_OUT = [0.65, 0, 0.35, 1] as const;
+
+/**
+ * "Previously" row: the two most recent companies are always visible. Hovering
+ * the chevron (or tapping it on touch screens) slides the rest in behind it as
+ * it travels to the end of the row and flips to point back. With a mouse, the
+ * row stays open until the cursor leaves it.
+ */
+function Previously({ reduced }: { reduced: boolean }) {
+  const [open, setOpen] = useState(false);
+  const lastPointer = useRef("");
+  const rowRef = useRef<HTMLDivElement>(null);
+
+  // Touch: a tap anywhere outside the row closes it again.
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: PointerEvent) => {
+      if (e.pointerType === "mouse") return;
+      if (!rowRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("pointerdown", onDown);
+    return () => document.removeEventListener("pointerdown", onDown);
+  }, [open]);
+
+  const move = { duration: reduced ? 0 : 0.5, ease: EASE_IN_OUT };
+
+  return (
+    <motion.div
+      ref={rowRef}
+      variants={fadeUp}
+      onPointerLeave={(e) => e.pointerType === "mouse" && setOpen(false)}
+      className="relative mt-3 flex w-fit max-w-full flex-wrap items-center gap-x-3 gap-y-1 text-sm sm:text-base"
+    >
+      <span className="font-sans text-[0.7rem] font-medium uppercase tracking-[0.18em] text-neutral-500">
+        Previously
+      </span>
+      {PAST_SHOWN.map((name) => (
+        <span key={name} className="whitespace-nowrap text-neutral-300">
+          {name}
+          <Sep />
+        </span>
+      ))}
+      <AnimatePresence initial={false} mode="popLayout">
+        {open &&
+          PAST_HIDDEN.map((name, i) => (
+            <motion.span
+              key={name}
+              layout="position"
+              initial={{ opacity: 0, x: reduced ? 0 : -16 }}
+              animate={{
+                opacity: 1,
+                x: 0,
+                transition: {
+                  duration: reduced ? 0 : 0.4,
+                  ease: EASE_IN_OUT,
+                  delay: reduced ? 0 : 0.08 + i * 0.07,
+                },
+              }}
+              exit={{
+                opacity: 0,
+                x: reduced ? 0 : -16,
+                transition: {
+                  duration: reduced ? 0 : 0.25,
+                  ease: EASE_IN_OUT,
+                  delay: reduced ? 0 : (PAST_HIDDEN.length - 1 - i) * 0.04,
+                },
+              }}
+              className="whitespace-nowrap text-neutral-300"
+            >
+              {name}
+              {i < PAST_HIDDEN.length - 1 && <Sep />}
+            </motion.span>
+          ))}
+      </AnimatePresence>
+      <motion.button
+        layout="position"
+        transition={{ layout: move }}
+        type="button"
+        aria-expanded={open}
+        aria-label={open ? "Hide earlier companies" : "Show earlier companies"}
+        onPointerDown={(e) => (lastPointer.current = e.pointerType)}
+        onPointerEnter={(e) => e.pointerType === "mouse" && setOpen(true)}
+        onClick={() => {
+          // Mouse users get hover; clicks come from touch, pen or keyboard.
+          if (lastPointer.current !== "mouse") setOpen((o) => !o);
+          lastPointer.current = "";
+        }}
+        className="-m-2 inline-flex size-9 items-center justify-center text-neutral-500 transition-colors hover:text-white aria-expanded:text-[#b9a3f5]"
+      >
+        <motion.span
+          aria-hidden
+          className="inline-flex"
+          animate={{ rotate: open ? 180 : 0 }}
+          transition={move}
+        >
+          <ChevronRight className="size-4" />
+        </motion.span>
+      </motion.button>
+    </motion.div>
+  );
+}
+
 const fadeUp = {
   hidden: { opacity: 0, y: 16 },
   show: {
@@ -176,10 +286,19 @@ export default function Home() {
             variants={fadeUp}
             className="mt-8 text-base font-medium text-neutral-200 sm:text-lg"
           >
-            Software Engineer @ Robinhood
+            Member of Technical Staff @&nbsp;
+            <a
+              href="https://www.opendoor.com"
+              target="_blank"
+              rel="noreferrer"
+              className="text-neutral-100 underline decoration-neutral-600 decoration-1 underline-offset-4 transition-colors hover:decoration-[#b9a3f5]"
+            >
+              Opendoor
+            </a>
             <span className="mx-2 text-neutral-600">·</span>
-            UWaterloo Software Engineering &rsquo;25
+            UWaterloo Software Engineering&nbsp;&rsquo;25
           </motion.p>
+          <Previously reduced={reduced} />
           <motion.p
             variants={fadeUp}
             className="mt-4 max-w-xl text-base leading-relaxed text-pretty text-neutral-400 sm:text-lg"
@@ -188,12 +307,6 @@ export default function Home() {
             robotics, game engines, and programming languages to AI-powered HCI
             systems, computer graphics, and scalable infrastructure. I care
             about correctness, performance, and code that lasts.
-          </motion.p>
-          <motion.p
-            variants={fadeUp}
-            className="mt-4 max-w-xl text-sm leading-relaxed text-pretty text-neutral-600"
-          >
-            Previously @ BitGo, PostGrid, Capsule, Bloq, and TD Bank.
           </motion.p>
 
           <motion.div
