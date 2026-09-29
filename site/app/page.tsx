@@ -41,8 +41,30 @@ const SOCIALS = [
   },
 ] as const;
 
-const PAST_SHOWN = ["Robinhood", "BitGo"] as const;
-const PAST_HIDDEN = ["PostGrid", "Capsule", "Bloq", "TD Bank"] as const;
+const PAST_SHOWN = [
+  { name: "Robinhood", href: "https://robinhood.com" },
+  { name: "BitGo", href: "https://bitgo.com" },
+] as const;
+const PAST_HIDDEN = [
+  { name: "PostGrid", href: "https://postgrid.com" },
+  { name: "Capsule", href: "https://capsulelabs.xyz" },
+  { name: "Bloq", href: "https://bloq.com" },
+  { name: "TD Bank", href: "https://tdbank.com" },
+] as const;
+
+/** Company links stay quiet: no underline, just a color shift on hover. */
+function OrgLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className="transition-colors hover:text-[#b9a3f5]"
+    >
+      {children}
+    </a>
+  );
+}
 
 const SPEED = 70; // ms per character
 const START_DELAY = 350; // ms before typing begins
@@ -153,15 +175,15 @@ function Previously({ reduced }: { reduced: boolean }) {
       <span className="font-sans text-[0.7rem] font-medium uppercase tracking-[0.18em] text-neutral-500">
         Previously
       </span>
-      {PAST_SHOWN.map((name) => (
+      {PAST_SHOWN.map(({ name, href }) => (
         <span key={name} className="whitespace-nowrap text-neutral-300">
-          {name}
+          <OrgLink href={href}>{name}</OrgLink>
           <Sep />
         </span>
       ))}
       <AnimatePresence initial={false} mode="popLayout">
         {open &&
-          PAST_HIDDEN.map((name, i) => (
+          PAST_HIDDEN.map(({ name, href }, i) => (
             <motion.span
               key={name}
               layout="position"
@@ -186,7 +208,7 @@ function Previously({ reduced }: { reduced: boolean }) {
               }}
               className="whitespace-nowrap text-neutral-300"
             >
-              {name}
+              <OrgLink href={href}>{name}</OrgLink>
               {i < PAST_HIDDEN.length - 1 && <Sep />}
             </motion.span>
           ))}
@@ -287,14 +309,7 @@ export default function Home() {
             className="mt-8 text-base font-medium text-neutral-200 sm:text-lg"
           >
             Member of Technical Staff @&nbsp;
-            <a
-              href="https://www.opendoor.com"
-              target="_blank"
-              rel="noreferrer"
-              className="text-neutral-100 underline decoration-neutral-600 decoration-1 underline-offset-4 transition-colors hover:decoration-[#b9a3f5]"
-            >
-              Opendoor
-            </a>
+            <OrgLink href="https://www.opendoor.com">Opendoor</OrgLink>
             <span className="mx-2 text-neutral-600">·</span>
             UWaterloo Software Engineering&nbsp;&rsquo;25
           </motion.p>
